@@ -1,0 +1,30 @@
+.modal-dialog.modal-notify.modal-info .fa {
+  color: white;
+}
+
+.primary-color {
+  background-color: #ed6f52!important;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    background-color: #F37053;
+    color: whitesmoke;
+  }
+
+.backButton {
+    color: black;
+    background-color: white !important;
+    display: inline-block;
+  }
+
+table {
+    counter-reset: tableCount;     
+}
+
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}

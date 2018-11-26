@@ -1,0 +1,30 @@
+<div class="page-margin">
+  <div class="header">
+    <h1>{{ title }}</h1>
+    <button [routerLink]="['/projects/new']" type="button" class="btn btn-light-green accent-3 btn-md">
+        <i class="fa fa-plus pr-2" aria-hidden="true"></i> CREATE NEW PROJECT </button>  
+  </div>
+  <div class="card">
+    <table class="table text-left">
+      <thead>
+        <tr>
+          <th>Project Name</th>
+          <th>Created By</th>
+          <th>Date Created</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!projects || projects.length === 0">
+          <td class="text-center" colspan="4">No projects to show. Create one?</td>
+        </tr>
+        <tr *ngFor="let project of projects">
+          <td>{{ project.name }}</td>
+          <td>{{ project.userName }}</td>
+          <td>{{ project.dateCreated | date: 'dd MMM yyyy' }}</td>
+          <td><a [routerLink]="['/projects/' + project.id]" routerLinkActive="active" class="btn btn-default">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

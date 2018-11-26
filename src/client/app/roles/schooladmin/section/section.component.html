@@ -1,0 +1,71 @@
+<div class="page-margin">
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <h1 class="font-weight-bold">Sections</h1>
+                </div>
+                <div class="col-10">
+                    <h4 class="font-weight-bold grey-text text-truncate" style="margin-top:10px;">Introduction to Computer Programming</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <h4 style="margin-top:10px;">Search:</h4>
+                </div>
+                <div class="col-2">
+                    <form>
+                        <input type="email" id="defaultFormLoginEmailEx" class="form-control">
+                    </form>
+                </div>
+                <div class="col-2">
+                    <h4 style="margin-top:10px;">Filter By:</h4>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-outline-default dropdown-toggle btn-md" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        All
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-light-green accent-3 btn-md">
+                        <i class="fa fa-plus pr-2" aria-hidden="true"></i>Add</button>
+                    <button class="btn btn-outline-default btn-md" type="button">Select</button>
+                </div>
+            </div>
+            <div class="card">
+                <table class="table text-left">
+                    <thead>
+                        <tr>
+                            <th width="1%">#</th>
+                            <th width="57%">Title</th>
+                            <th width="20%">Start Date</th>
+                            <th width="20%">End Date</th>
+                            <th width="2%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>4G</td>
+                            <td>Start Date</td>
+                            <td>End Date</td>
+                            <td>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item fa fa-users pr-2"> Teacher</a>
+                                        <a [routerLink]="['/sectionroster/']" class="dropdown-item fa fa-users pr-2"> Students</a>
+                                        <a class="dropdown-item fa fa-bookmark-o" href="#"> Chapters</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

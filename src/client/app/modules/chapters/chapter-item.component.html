@@ -1,0 +1,176 @@
+<div class="page-margin">
+  <div *ngIf="ChapterChapterItem" class="back-header">
+      <button [routerLink]="['/chapter']" type="button" class="backButton btn px-3"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      <h5 class="ml-2 align-middle font-weight-bold" style="display: inline-block">Chapter Item</h5>
+  </div>
+  <div class="header">
+    <h1 *ngIf="!ChapterChapterItem">Chapter Items</h1>
+  </div>
+  <div class="item-type-icons text-right" *ngIf="!ChapterChapterItem">
+    <button *ngIf="toggleCb" (click)="deleteChapterItem()" type="button" class="btn btn-danger btn-md">
+      <i class="fa fa-trash-o pr-2" aria-hidden="true" (click)="deleteChapterItem()"></i>Delete Item</button>
+    <button class="btn btn-light-green accent-3 btn-md" type="button" (click)="createNewChapterItem()">
+      <i class="fa fa-plus pr-2"></i> Add Item</button>
+  </div>
+  <div class="row" *ngIf="ChapterChapterItem">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          Available Chapter Items
+        </div>
+        <div class="card-body">
+          <div class="card">
+            <ul class="list-group list-group-flush" *ngFor="let item of chapterItems">
+              <a (click)="addChapterItemToChapter(item.id)">
+                <li class="list-group-item">
+                  <div *ngIf='item.itemType === "slides"'>
+                    <i class="fa fa-play-circle-o"></i> {{ item.name }}
+                  </div>
+                  <div *ngIf='item.itemType === "video"'>
+                    <i class="fa fa-file-movie-o"></i> {{ item.name }}
+                  </div>
+                  <div *ngIf='item.itemType === "challenge"'>
+                    <i class="fa fa-flag-o"></i> {{ item.name }}
+                  </div>
+                </li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <table class="table table-hover table-striped">
+          <thead>
+            <th width="1%">#</th>
+            <th>Title</th>
+            <th width="20%">Type</th>
+            <th width="15%">Action</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mainListChapterItem">
+              <th class="counterCell"></th>
+              <td>{{ item.name }}</td>
+              <td>
+                <div *ngIf='item.itemType === "slides"'>
+                  <i class="fa fa-play-circle-o"></i> Slides
+                </div>
+                <div *ngIf='item.itemType === "video"'>
+                  <i class="fa fa-file-movie-o"></i> Video
+                </div>
+                <div *ngIf='item.itemType === "challenge"'>
+                  <i class="fa fa-flag-o"></i> Challenge
+                </div>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="deleteChapterItemToChapter(item.id)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="!ChapterChapterItem">
+    <table class="table table-hover table-striped">
+      <thead>
+        <th *ngIf="toggleCb" width="1%">
+          <input type="checkbox">
+        </th>
+        <th>Title</th>
+        <th>Type</th>
+        <th width="20%">Source</th>
+        <th width="10%" class="text-center">Action</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of chapterItems">
+          <td *ngIf="toggleCb">
+            <input type="checkbox" (change)="checkDelete(item.id)">
+          </td>
+          <td>{{ item.name }}</td>
+          <td>
+            <div *ngIf='item.itemType === "slides"'>
+              <i class="fa fa-play-circle-o"></i> Slides
+            </div>
+            <div *ngIf='item.itemType === "video"'>
+              <i class="fa fa-file-movie-o"></i> Video
+            </div>
+            <div *ngIf='item.itemType === "challenge"'>
+              <i class="fa fa-flag-o"></i> Challenge
+            </div>
+          </td>
+          <td>
+            <div *ngIf="item.url">
+              {{ item.url }}
+            </div>
+            <div *ngIf="item.challengeId">
+              <button type="button" class="btn btn-primary btn-sm">View Challenge</button>
+            </div>
+          </td>
+          <td class="text-center">
+            <div class="dropdown">
+              <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                <a (click)="deleteToggle()" class="dropdown-item fa fa-trash pr-2">
+                <span> Delete </span></a>
+                <a (click)="select(item)" class="dropdown-item fa fa-edit pr-2">
+                 <span> Edit</span></a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="chaptermodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <!--Modal: Contact form-->
+  <div class="modal-dialog cascading-modal" role="document">
+
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Header-->
+      <div class="modal-header primary-color white-text">
+        <h4 class="title">
+          <i class="fa fa-file-text-o"></i> Chapter Item Info</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" #chapterItemForm="ngForm" novalidate>
+          <div class="md-form">
+            <i class="fa fa-chain-broken prefix"></i>
+            <select class="custom-select" [(ngModel)]="selectedChapterItem.item_type" id="item_type" name="item_type">
+              <option *ngFor="let typeOpt of typesOptionsSelect" [value]="typeOpt.value">{{ typeOpt.label }}</option>
+            </select>
+            <label for="type" class="active">Type</label>
+          </div>
+          <div class="md-form">
+            <i class="fa fa-align-center prefix"></i>
+            <label [class.active]="selectedChapterItem.name && selectedChapterItem.name.length > 0">Title</label>
+            <input [(ngModel)]="selectedChapterItem.name" #name="ngModel" type="text" id="name" name="name" class="form-control" required>
+          </div>
+          <div class="md-form">
+            <i class="fa fa-globe prefix"></i>
+            <label [class.active]="selectedChapterItem.url && selectedChapterItem.url.length > 0">URL</label>
+            <input [(ngModel)]="selectedChapterItem.url" #url="ngModel" type="text" id="url" name="url" class="form-control" required>
+          </div>
+          <div class="text-center mt-2">
+            <button [disabled]="!chapterItemForm.form.valid" type="submit" class="btn btn-info"> Submit
+              <i class="fa fa-sign-in ml-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  <!--/Modal: Contact form-->
+</div>

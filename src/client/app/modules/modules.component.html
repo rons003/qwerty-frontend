@@ -1,0 +1,157 @@
+<div class="page-margin">
+  <div *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin() || authService.isActiveUserTeacher()">
+    <div class="header">
+      <h1>Modules</h1>
+    </div>
+    <div class="row">
+      <div class="col" *ngIf="authService.isActiveUserSuperAdmin()">
+        <h5>
+          <i class="fa fa-building prefix"></i> School
+          <select class="custom-select" [(ngModel)]="selectedModule.school_id" id="school_id" name="school_id" style="width: 250px;"
+            (change)="getModule($event.target.value)">
+            <option *ngFor="let schoolOpt of schools" [value]="schoolOpt.name">{{ schoolOpt.name }}</option>
+          </select>
+        </h5>
+      </div>
+      <div class="col text-right" *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin()">
+        <button *ngIf="toggleCb" (click)="deleteModule()" type="button" class="btn btn-danger btn-md">
+          <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>Delete</button>
+        <button (click)="createNewModule(); toggleCb = false" click="" type="button" class="btn btn-light-green accent-3 btn-md">
+          <i class="fa fa-plus pr-2" aria-hidden="true"></i> ADD NEW MODULE </button>
+      </div>
+    </div>
+    <div class="card">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th *ngIf="toggleCb">
+              <input type="checkbox">
+            </th>
+            <th width="1%">#</th>
+            <th width="39%">Title</th>
+            <th>Authorized School</th>
+            <th>Chapters</th>
+            <th>Section</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let module of modules">
+            <td *ngIf="toggleCb">
+              <input type="checkbox" (change)="checkDelete(module.id)">
+            </td>
+            <th class="counterCell"></th>
+            <td>{{ module.name }}</td>
+            <td>{{ module.schoolId }}</td>
+            <td>{{ module.chapterList.length }}</td>
+            <td>{{ module.sectionList.length }}</td>
+            <td>
+              <div class="dropdown">
+                <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+                </a>
+                <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                  <a *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin()" (click)="deleteToggle()" class="dropdown-item fa fa-trash pr-2">
+                    <span> Delete</span>
+                  </a>
+                  <a *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin()" (click)="select(module)" class="dropdown-item fa fa-edit pr-2">
+                    <span> Edit</span>
+                  </a>
+                  <a [routerLink]="['/chapter/']" [queryParams]="{ id: module.id, title: module.name }" class="dropdown-item fa fa-book pr-2">
+                    <span> Chapter</span>
+                  </a>
+                  <a [routerLink]="['/sections/']" [queryParams]="{ id: module.id, title: module.name }" class="dropdown-item fa fa-users pr-2">
+                    <span> Section</span>
+                  </a>
+                  <!-- <a [routerLink]="['/chapter']" [queryParams]="{ id: module.id, title: module.name }" class="dropdown-item fa fa-book pr-2">
+                    <span> Chapters</span>
+                  </a> -->
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="authService.isLoggedIn() && !authService.isActiveUserAdmin() && !authService.isActiveUserTeacher() && !authService.isActiveUserSuperAdmin()">
+    <div class="header">
+      <h1>My Modules</h1>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header primary-color white-text">
+        <h4 class="title">
+          <i class="fa fa-file-text-o"></i>Module Info</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" #moduleForm="ngForm" novalidate>
+          <div class="md-form form-sm">
+            <i class=" fa fa-file-text-o prefix"></i>
+            <label [class.active]="selectedModule.name && selectedModule.name.length > 0">Title</label>
+            <input [(ngModel)]="selectedModule.name" #title="ngModel" type="text" id="title" name="title" class="form-control" required>
+          </div>
+          <div class="md-form form-sm" *ngIf="authService.isActiveUserSuperAdmin()">
+            <i class="fa fa-building prefix"></i>
+            <select class="custom-select" [(ngModel)]="selectedModule.school_id" id="school_id" name="school_id" (change)="getModule($event.target.value)">
+              <option *ngFor="let schoolOpt of schools" [value]="schoolOpt.name">{{ schoolOpt.name }}</option>
+            </select>
+            <label for="school_id" class="active">School</label>
+          </div>
+          <div class="text-center mt-2">
+            <button [disabled]="!moduleForm.form.valid" type="submit" class="btn btn-info"> SEND
+              <i class="fa fa-sign-in ml-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+
+<!-- Quick Guide Modals-->
+
+<!--Table-->
+<div class="divModal" *ngIf="authService.isActiveUserTeacher()">{{ quickModal() }}</div>
+<!-- Bottom right Modal Medium Info -->
+<div class="modal animated fade right" id="centralModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-warning modal-side modal-bottom-right" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Quick Guide</p>
+        <button (onClick)=" localStorageAvailable(); messageBox();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <i class="fa fa-file-text-o fa-4x mb-3 animated rotateIn" aria-hidden="true"></i>
+          <p class="text-justify">This is the teacher's module wherein all the numbers of the activities displayed. Each activities composed of different
+            sections, rosters and materials</p>
+        </div>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!-- Bottom right Modal Medium Info-->
+<!-- end of quick guide modal-->

@@ -1,0 +1,12 @@
+<div class="d-flex flex-row-reverse button-padding">
+  <button (click)="togglePlayMode()" [ngClass]="{'btn-success': !isInPlayMode(), 'btn-danger': isInPlayMode()}" type="button" class="btn">
+    <i [ngClass]="{'fa-play': !isInPlayMode(), 'fa-stop': isInPlayMode()}" class="fa mr-1"></i>{{ isInPlayMode() ? 'Stop' : 'Play' }}
+  </button>
+</div>
+<div style="display: flex; border: 2px solid black;">
+    <cg-phaser #phaser></cg-phaser>
+    <cg-blockly #blockly style="flex: 1;"></cg-blockly>
+</div>
+<div>
+  <h4><span [ngClass]="{'blue': !isInPlayMode(), 'green': isInPlayMode()}" class="badge"><i [ngClass]="{'fa-play': isInPlayMode(), 'fa-pencil': !isInPlayMode() }" class="fa"></i> {{ isInPlayMode() ? 'Playing' : 'Editing' }}</span></h4>
+</div>

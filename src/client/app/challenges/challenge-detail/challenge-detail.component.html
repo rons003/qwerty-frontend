@@ -1,0 +1,130 @@
+<div>
+  <div style="margin-bottom: 1%;">
+    <div class="row">
+
+
+      <div class="col-md-2 button-padding">
+        <button (click)="toggleInstructions()" type="button" class="btn btn-primary btn-block fill-parent-height" style="padding: 0;">Instructions</button>
+      </div>
+      <div class="col-md-2 button-padding">
+        <button (click)="toggleHint()" id="btn-hints" type="button" class="btn btn-warning btn-block fill-parent-height" data-toggle="tooltip" data-placement="top" title="Stuck? Check the hints!">Hints</button>
+      </div>
+      <div class="col-md-2 button-padding">
+        <button *ngIf="authService.isActiveUserAdmin()" (click)="toggleSolutions()" type="button" class="btn btn-secondary btn-block fill-parent-height">Solutions</button>
+      </div>
+      <div class="col-md-2 button-padding">
+      </div>
+      <div class="col-md-2 button-padding">
+        <div class="btn-group w-100">
+            <button class="btn btn-default btn-block fill-parent-height dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</button>
+
+            <div class="dropdown-menu">
+              <a (click)="saveChallenge()" class="dropdown-item"><i class="fa fa-save mr-1"></i>Save Blocks</a>
+              <a (click)="resetChallengeData()" class="dropdown-item"><i class="fa fa-repeat mr-1"></i>Reset Blocks</a>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-2 button-padding">
+        <button (click)="togglePlayMode()" [ngClass]="{'btn-success': !isInPlayMode(), 'btn-danger': isInPlayMode()}" type="button" class="btn btn-block fill-parent-height" style="padding: 0;">
+          <i [ngClass]="{'fa-play': !isInPlayMode(), 'fa-stop': isInPlayMode()}" class="fa mr-1"></i>{{ isInPlayMode() ? 'Stop' : 'Play' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Instructions Panel -->
+  <div id="instructionsPanel" *ngIf="isInstructionsVisible" class="card standard-panel justify-text">
+    <div class="card-header primary-color white-text" style="display: flex;">
+      <div style="flex: 1;">
+        <h4 class="vertical-center" style="margin: 0 auto;">Instructions</h4>
+      </div>
+
+      <button type="button" class="btn btn-danger btn-sm exit-button" (click)="toggleInstructions()">
+        <i class="fa fa-remove"></i>
+      </button>
+    </div>
+    <div class="card-block container fill-parent-width blue lighten-5">
+      <div class="row">
+        <div class="col-sm-6" style="padding-left: 0;">
+          <!-- <h3 [innerHtml]="challenge && challenge.desc ? challenge.desc : ''"></h3> -->
+          <p [innerHtml]="challenge && challenge.instructions ? challenge.instructions : ''" class="text-instructions"></p>
+        </div>
+        <div class="col-sm-6" style="padding: 0;">
+          <img src="{{ challenge && challenge.gifUrl ? challenge.gifUrl : '' }}" class="img-responsive"
+               style="margin: 0 auto; border: 2px solid #4285F4;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hint Panel -->
+  <div id="hintPanel" *ngIf="isHintVisible" class="card standard-panel justify-text">
+    <div class="card-header warning-color white-text" style="display: flex;">
+      <div style="flex: 1;">
+        <h4 class="vertical-center" style="margin: 0 auto;">Hint</h4>
+      </div>
+      <button type="button" class="btn btn-danger btn-sm exit-button" (click)="toggleHint()">
+        <i class="fa fa-remove"></i>
+      </button>
+    </div>
+    <div class="card-block container fill-parent-width yellow lighten-5">
+      <p [innerHtml]="challenge && challenge.hint ? challenge.hint : ''" class="text-hints"></p>
+    </div>
+  </div>
+
+  <!-- Solutions Panel -->
+  <div id="solutionsPanel" *ngIf="isSolutionsVisible" class="card standard-panel">
+    <div class="card-header secondary-color white-text" style="display: flex;">
+      <div style="flex: 1;">
+        <h4 class="vertical-center" style="margin: 0 auto;">Solutions</h4>
+      </div>
+      <button type="button" class="btn btn-danger btn-sm exit-button" (click)="toggleSolutions()">
+        <i class="fa fa-remove"></i>
+      </button>
+    </div>
+    <div class="card-block container fill-parent-width purple lighten-5">
+      <img *ngIf="challenge && challenge.solutions && challenge.solutions.length !== 0" src="{{ challenge && challenge.solutions}}"
+           class="img-responsive" style="margin: 0 auto; border: 2px solid #aa66cc;">
+
+      <h4 *ngIf="!challenge.solutions || challenge.solutions.length === 0" style="text-align: center;">No solutions available yet.</h4>
+    </div>
+  </div>
+
+  <!-- Phaser and Blockly Workspace -->
+  <div style="border: 2px solid black; position: relative;">
+
+    <!-- Pass Challenge Overlay + Panel -->
+    <div id="passChallengeOverlay" *ngIf="isPassChallengeVisible" [style.height]="getBlocklyHeight()"
+         class="view hm-stylish-strong">
+      <div class="mask flex-center">
+
+        <div id="passChallengePanel" class="card">
+          <div class="card-header green white-text" style="height: 30%;">
+            <h1 style="margin: 0 auto;" class="vertical-center">You Pass!</h1>
+            <span id="closePassChallengeButton" class="" style="position: absolute; top: 6px; right: 10px;" (click)="hidePassChallengePanel()">
+              <i class="fa fa-remove fa-lg"></i>
+            </span>
+          </div>
+
+          <div class="container d-flex flex-column justify-content-center">
+            <img src="../../../assets/img/flag.png" style="height: 150px; width: 150px; margin-top: 10px">
+            <button *ngIf="goToNextBtnName && goToNextBtnName != ''" [disabled]="!isChallengeClear" (click)="onNextBtnClicked()" type="button" class="btn btn-success">{{ goToNextBtnName }}</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display: flex;">
+      <cg-phaser #phaser></cg-phaser>
+      <cg-blockly #blockly style="flex: 1;"></cg-blockly>
+    </div>
+  </div>
+</div>
+
+<div style="margin-bottom: 1%;">
+  <h4><span [ngClass]="{'blue': !isInPlayMode(), 'green': isInPlayMode()}" class="badge"><i [ngClass]="{'fa-play': isInPlayMode(), 'fa-pencil': !isInPlayMode() }" class="fa"></i> {{ isInPlayMode() ? 'Playing' : 'Editing' }}</span></h4>
+</div>
+
+<div id="snackbar">Challenge saved!</div>

@@ -1,0 +1,8 @@
+<div class="jumbotron text-center">
+  <h1>Challenge List</h1>
+</div>
+<div class="container page-content card">
+  <div *ngFor="let challenge of challenges; let i = index">
+    <button (click)="goToChallenge(i)">{{ challenge.name }}</button>
+  </div>
+</div>

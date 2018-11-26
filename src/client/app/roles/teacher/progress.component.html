@@ -1,0 +1,66 @@
+<div [ngClass]="{'active': displayShown === 'progress'}" class="page-margin" >
+    <div class="header">
+        <h3 class="font-weight-bold">Progress</h3>
+        <h5 class="float-center font-weight-bold grey-text text-truncate" style="max-width: 50%;" >Introduction to Computer Programming  >  {{ group?.name }}  >  {{ selectedChapter?.name }}</h5>
+        <div class="alignButton"><button type="button" class="btn btn-light-green accent-3"><i class="fa fa-plus pr-2" aria-hidden="true"></i> Add</button>
+            <button type="button" class="btn btn-danger"><i class="fa fa-trash-o pr-2" aria-hidden="true"></i> Delete</button>
+            <button type="button" class="btn btn-warning"><i class="fa fa-edit pr-2" aria-hidden="true"></i> Edit</button> 
+        </div>
+    </div>
+<!--Table-->
+<table class="table btn-table table-hover">
+
+    <!--Table head-->
+    <thead class="th1">
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Year</th>
+            <th *ngFor="let item of selectedChapter?.chapterItems" class="counterCell1 align-middle">
+                    <i [ngClass]="{'fa-photo': item.type === 'slides', 'fa-video-camera': item.type === 'video', 'fa-flag': item.type === 'challenge'}" class="fa"></i>
+            </th>
+        </tr>
+    </thead>
+  <!--Table head-->
+
+    <!--Table body-->
+    <tbody class="tb1">
+        <tr *ngFor="let student of group.students">
+            <th class="counterCell align-middle"></th>
+            <td class="align-middle">{{ student.firstName }}</td>                
+            <td class="align-middle">{{ student.lastName }}</td>
+            <td class="align-middle">2020</td>
+            <td *ngFor="let item of selectedChapter?.chapterItems" class="align-middle"><i *ngIf="isChapterItemCompletedForStudent(student, item)" class="fa fa-check green-text"></i></td>
+        </tr>
+    </tbody>
+    <!--Table body-->
+
+</table>
+<!--Table-->
+<div class="divModal">{{ showModal() }}</div>
+<!-- Bottom right Modal Medium Info -->
+<div class="modal animated fade right" id="centralModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-warning modal-side modal-bottom-right" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <p class="heading lead">Quick Guide</p>
+                    <button (onClick)=" localStorageAvailable(); messageBox();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                </div>
+        
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fa fa-file-text-o fa-4x mb-3 animated rotateIn" aria-hidden="true"></i>
+                        <p class="text-justify">This is the progress page. This displays the list of the students on selected section as well as their score cards. The teacher can edit, delete and add a scorecard of the student on this section. </p>
+                    </div>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+</div>
+        <!-- Bottom right Modal Medium Info-->

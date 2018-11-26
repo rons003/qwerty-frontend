@@ -1,0 +1,99 @@
+.dashboard-container {
+  height: 100%;
+  margin-top: 0px;
+  display: flex;
+}
+
+.bottom-margin {
+  margin-bottom: 20px;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.homework-container, .chapter-container {
+  width: 100%;
+}
+
+.homework {
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Apply divider line to all but last homework */
+.homework:not(:last-child) {
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.homework button {
+  width: 150px;
+}
+
+.homework-heading h3 {
+  margin-bottom: 5px;
+}
+
+.homework-heading p {
+  margin: 0px;
+  margin-left: 15px;
+}
+
+.chapter {
+  padding-bottom: 10px;
+}
+
+/* Apply divider line to all but last chapter */
+.chapter:not(:last-child) {
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.chapter-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 28px;
+}
+
+.chapter-heading h4 {
+  margin: 20px 0;
+}
+
+.chapter-content {
+
+}
+
+.chapter-row {
+  margin-bottom: 15px;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chapter-row button {
+  width: 150px;
+}
+
+.chapter-text {
+  display: flex;
+  align-items: center;
+}
+
+.chapter-text p {
+  font-size: 18px;
+}
+
+.chapter-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.chapter-status-complete {
+  background-color: lightgreen;
+}

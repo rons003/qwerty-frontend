@@ -1,0 +1,218 @@
+<div class="page-margin">
+      <div *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin()">
+        <div class="row">
+          <div class="col-10">
+            <h1>Schools</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+              <div class="md-form form-sm">
+                  <label>Search:</label>
+                  <input (keyup)="getSchools($event.target.value)" type="text" class="form-control">
+              </div>
+          </div>
+          <div class="col text-right">
+            <button type="button" class="btn btn-danger btn-md" (click)="deleteSchool()" *ngIf="toggleCb">
+              <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>Delete</button>
+            <button (click)="createNewSchool()" type="button" class="btn btn-light-green accent-3 btn-md">
+              <i class="fa fa-plus pr-2" aria-hidden="true"></i> ADD SCHOOL</button>
+          </div>
+        </div>
+        <div class="card">
+          <table class="table text-left table-hover table-striped">
+            <thead>
+              <tr>
+                <th *ngIf="toggleCb">
+                  <input type="checkbox" (change)="selectAll()">
+                </th>
+                <th>#</th>
+                <th>School</th>
+                <th>Address</th>
+                <th>Admin ID</th>
+                <th>Teachers</th>
+                <th>Sections</th>
+                <th>Students</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let school of schools; let i = index">
+                <td class="d-none checkBoxTd">
+                  <input class="checkBoxes" type="checkbox" (change)="checkDeletes(school.id)">
+                </td>
+                <th class="counterCell"></th>
+                <td>{{ school.name }}</td>
+                <td>{{ school.address }}</td>
+                <td>{{ school.administratorId }}</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>
+                  <div class="dropdown p-2">
+                    <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                      <a (click)="deleteToggle(school.id,i)" class="dropdown-item fa fa-trash pr-2"><span> Delete</span></a>
+                      <a class="dropdown-item fa fa-edit pr-2" (click)="select(school)"><span> Edit</span></a>
+                      <a [routerLink]="['/sections/']" [queryParams]="{ schoolId: school.id, title: school.name}" class="dropdown-item fa fa-users pr-2"><span> Section</span></a>
+                      <a [routerLink]="['/schools/student']" [queryParams]="{ id: school.id, title: school.name, school: school.id }" class="dropdown-item fa fa-users pr-2">
+                        <span> Students</span>
+                      </a>
+                     <!-- <a class="dropdown-item fa fa-book " href="#"><span> Chapters</span></a> -->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="authService.isActiveUserTeacher()">
+        <div class="row">
+          <div class="col-10">
+            <h1>Schools</h1>
+          </div>
+        </div>
+        <div class="text-right">
+          <button type="button" class="btn btn-danger btn-md" (click)="deleteSchool()" *ngIf="toggleCb">
+            <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>Delete</button>
+          <button (click)="createNewSchool()" type="button" class="btn btn-light-green accent-3 btn-md">
+            <i class="fa fa-plus pr-2" aria-hidden="true"></i> ASSIGN SCHOOL ID </button>
+        </div>
+        <div class="card">
+            <table class="table text-left table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th *ngIf="toggleCb">
+                      <input type="checkbox">
+                    </th>
+                    <th>#</th>
+                    <th>School</th>
+                    <th>Address</th>
+                    <th>Teachers</th>
+                    <th>Admin ID</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let school of schools; let i = index">
+                    <td class="d-none checkBoxTd">
+                      <input class="checkBoxes" type="checkbox" (change)="checkDeletes(school.id)">
+                    </td>
+                    <th class="counterCell"></th>
+                    <td>{{ school.name }}</td>
+                    <td>{{ school.address }}</td>
+                    <td>0</td>
+                    <td>{{ school.administratorId }}</td>
+                    <td>
+                      <div class="dropdown">
+                        <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton">
+                          <a (click)="deleteToggle(school.id,i)" class="dropdown-item fa fa-trash pr-2"> <span> Delete</span></a>
+                          <a class="dropdown-item fa fa-edit pr-2" (click)="select(school)"> <span> Edit</span></a>
+                          <a [routerLink]="['/sections/']" [queryParams]="{ schoolId: school.id, title: school.name}" class="dropdown-item fa fa-users pr-2"><span> Section</span></a>
+                          <a [routerLink]="['/schools/student']" [queryParams]="{ id: school.id, title: school.name, school: school.id }" class="dropdown-item fa fa-users pr-2">
+                            <span> Students</span>
+                          </a>
+                          <!---<a class="dropdown-item fa fa-bookmark-o" href="#"> <span> Chapters</span></a>-->
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+      <div *ngIf="authService.isLoggedIn() && !authService.isActiveUserAdmin() && !authService.isActiveUserTeacher() && !authService.isActiveUserSuperAdmin()">
+        Students View
+      </div>
+ </div>
+  
+  <div class="modal fade" id="moduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <!--Content-->
+      <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header primary-color white-text">
+          <h4 class="title">
+            <i class="fa fa-building"></i> School Info</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+  
+        <!--Body-->
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()" #schoolForm="ngForm" novalidate>
+            <div class="md-form form-sm">
+              <i class="fa fa-building prefix"></i>
+              <label [class.active]="selectedSchool.name && selectedSchool.name.length > 0">School Name</label>
+              <input [(ngModel)]="selectedSchool.name" #title="ngModel" type="text" id="title" name="name" class="form-control" required>
+            </div>
+            <div class="md-form form-sm">
+                <i class="fa fa-map-marker prefix"></i>
+                <label [class.active]="selectedSchool.address && selectedSchool.address.length > 0">Address</label>
+                <input [(ngModel)]="selectedSchool.address" #title="ngModel" type="text" id="address" name="title" class="form-control">
+              </div>
+        
+              <div class="md-form form-sm">
+                <i class="fa fa-user prefix"></i>
+                <select class="custom-select" id="administrator_id" [(ngModel)]="selectedSchool.administratorId" name="administrator_id">
+                    <option *ngFor="let userOpt of users">{{ userOpt.username }}</option>
+                </select>
+                <label for="administrator_id" class="active"> Admin ID</label>
+            </div>
+            <div class="text-center mt-2">
+              <button [disabled]="!schoolForm.form.valid" type="submit" class="btn btn-info"> SEND
+                <i class="fa fa-sign-in ml-1"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+  
+        <!--Footer-->
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+  
+  
+  <!-- Quick Guide Modals-->
+  
+  <!--Table-->
+  <div class="divModal" *ngIf="authService.isActiveUserTeacher()">{{ quickModal() }}</div>
+  <!-- Bottom right Modal Medium Info -->
+  <div class="modal animated fade right" id="centralModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning modal-side modal-bottom-right" role="document">
+      <!--Content-->
+      <div class="modal-content">
+        <!--Header-->
+        <div class="modal-header">
+          <p class="heading lead">Quick Guide</p>
+          <button (onClick)=" localStorageAvailable(); messageBox();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+          </button>
+        </div>
+  
+        <!--Body-->
+        <div class="modal-body">
+          <div class="text-center">
+            <i class="fa fa-file-text-o fa-4x mb-3 animated rotateIn" aria-hidden="true"></i>
+            <p class="text-justify">This is the teacher's module wherein all the numbers of the activities displayed. Each activities composed of different
+              sections, rosters and materials</p>
+          </div>
+        </div>
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+  <!-- Bottom right Modal Medium Info-->
+  <!-- end of quick guide modal-->
+  
+ 
+  
+

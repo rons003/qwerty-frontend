@@ -1,0 +1,184 @@
+<!--Navbar-->
+<nav class="navbar navbar-toggleable-md navbar-dark fixed-top d-flex align-items-center">
+  <div class="container d-flex justify-content-start">
+    <button *ngIf="authService.isLoggedIn()" class="navbarHam navbar-toggler align-self-center pl-1" type="button" (click)="openNav()">
+      <span *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin() || authService.isActiveUserTeacher() || authService.isActiveUserStudent()"
+        class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand  d-flex align-self-center pl-4" href="/">
+      <img src="./assets/img/logo.png" width="40" height="20" class="d-flex align-items-center">
+    </a>
+    <button *ngIf="authService.isLoggedIn()" class="navbarHam navbar-toggler align-self-center ml-auto p-1" type="button" data-toggle="collapse"
+      data-target="#navbarNav1">
+      <ul class="navbar-nav">
+        <!--<li *ngIf="!authService.isLoggedIn()" class="nav-item">-->
+        <!--<a [routerLink]="['/login']" class="nav-link">Login</a>-->
+        <!--</li>-->
+        <li *ngIf="authService.isLoggedIn()" class="nav-item">
+          <a (click)="closeModal()" class="nav-link " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v fa-lg align-self-center" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu dropdown-default dropdown-menu-right">
+            <p class="uname text-center">
+              <img src="{{ authService.getActiveUserPhoto() }}" class="img img-fluid z-depth-1 mr-2" alt="Responsive image">{{ authService.getActiveUserName() }}</p>
+            <div class="dropdown-divider"></div>
+            <a [routerLink]="['/profile/' + authService.getActiveUser().id ]" class="dropdown-item">My Profile</a>
+            <a *ngIf="authService.isLoggedIn() && authService.isActiveUserAdmin()" [routerLink]="['/account']" class="dropdown-item">Account Management</a>
+            <a [routerLink]="['/password']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="dropdown-item">Change Password</a>
+            <div class="dropdown-divider"></div>
+            <a (click)="logout()" href="#" class="dropdown-item">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </button>
+  </div>
+</nav>
+
+<!-- Sidenav -->
+<div *ngIf="authService.isLoggedIn() && urlStr != '/' " (click)="closeModal()" class="sidenav" id="fullHeightLeft" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div>
+    <!--Content-->
+    <!--Body-->
+    <div class="menu mt-3">
+      <ul *ngIf="authService.isActiveUserSuperAdmin()" class="nav navbar-nav pt-2">
+        <a [routerLink]="['/account']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Account Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-user fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Account Management</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/schools']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="School Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-building fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">School Management</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/mymodules']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Modules">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-folder-open fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Modules</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/chapter']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Chapter Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-book  fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Chapter Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/chapteritem']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Chapter Item Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-text  fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Chapter Item Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/sections']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Section Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-users fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Section Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/projects/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Project List">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-code-o fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Projects List</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/superadmin/dashboard']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:false}"
+          class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100" data-toggle="tooltip" data-placement="right"
+          title="Dashboard">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-dashboard fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Dashboard</span>
+          </li>
+        </a>
+
+      </ul>
+      <ul *ngIf="authService.isActiveUserAdmin()" class="nav navbar-nav">
+        <a [routerLink]="['/account']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Account Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-user fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Account Management</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/mymodules']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Modules">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-text-o fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Modules</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/chapter']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Chapter Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-book  fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Chapter Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/chapteritem']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Chapter Item Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-o  fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Chapter Item Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/sections']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Section Management">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-users fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Section Management</span>
+          </li>
+        </a>
+        <a [routerLink]="['/projects/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="Project List">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-code-o fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Projects List</span>
+          </li>
+        </a>
+
+        <a [routerLink]="['/schooladmin/dashboard']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:false}"
+          class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100" data-toggle="tooltip" data-placement="right"
+          title="Dashboard">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-dashboard fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">Dashboard</span>
+          </li>
+        </a>
+
+      </ul>
+
+      <ul *ngIf="authService.isActiveUserTeacher() || authService.isActiveUserStudent()" class="nav navbar-nav">
+        <a [routerLink]="['/projects/']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="My Projects">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-code-o fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">My Projects</span>
+          </li>
+        </a>
+        <a [routerLink]="['/mymodules']" [routerLinkActive]="['router-link-active']" [routerLinkActiveOptions]="{exact:true}" class="navModel nav-link animated flipInX d-flex flex-row pl-2 mr-4 w-100"
+          data-toggle="tooltip" data-placement="right" title="My Modules">
+          <li class="nav-item d-flex waves-light">
+            <i class="aricon fa fa-file-text-o fa-lg align-self-center ml-1 p-2" aria-hidden="true"></i>
+            <span class="spanText p-2 ml-3">My Modules</span>
+          </li>
+        </a>
+      </ul>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

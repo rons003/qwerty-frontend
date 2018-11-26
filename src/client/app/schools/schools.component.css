@@ -1,0 +1,61 @@
+.page-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn {
+    border-radius: 8px;
+    border: #e7e7e7;
+    color: black;
+    background-color: rgb(255, 255, 255)0;
+    text-transform: capitalize;
+  }
+    span {
+      font-family: Ubuntu;
+    }
+  table {
+    counter-reset: tableCount;     
+  }
+  .counterCell:before {              
+      content: counter(tableCount); 
+      counter-increment: tableCount; 
+  }
+
+  .custom-select{
+    width: 100%;
+    margin-top: 15px;
+    font-size: 15px;
+  }
+
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    background-color: #F37053;
+    color: whitesmoke;
+}
+
+.modal-dialog.modal-notify.modal-warning .badge, .modal-dialog.modal-notify.modal-warning .modal-header {
+  background-color: #ed6f52;
+}
+.dropdown-toggle::after {
+  display:none;
+}
+.primary-color {
+  background-color: #ed6f52!important;
+}
+.custom-select{
+  width: 92%;
+  margin-left: 30px;
+  margin-top: 10px;
+  font-size: 15px;
+}
+.fa-user{
+  text-align: center;
+  display: block;
+}

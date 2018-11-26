@@ -1,0 +1,144 @@
+{
+  "name": "Code Gakko Platform: The Sandbox",
+  "desc": "This is the sandbox. All of GakkoBlocks are in here. Have fun!",
+  "sprites": [
+    {
+      "name": "cat",
+      "enabled": true
+    },
+    {
+      "name": "rabbit",
+      "enabled": true
+    },
+    {
+      "name": "bee",
+      "enabled": true
+    },
+    {
+      "name": "ladybug",
+      "enabled": true
+    },
+    {
+      "name": "lion",
+      "enabled": false
+    },
+    {
+      "name": "monkey",
+      "enabled": false
+    }
+  ],
+  "toolbox": {
+    "Events": [
+      { "key": "gakko_event_all" },
+      { "key": "gakko_event_start" },
+      { "key": "gakko_event_keyboard" },
+      {
+        "key": "gakko_event_collision",
+        "values": ["cat", "rabbit"]
+      },
+      { "key": "gakko_event_click" },
+      { "key": "gakko_event_receive" },
+      { "key": "gakko_event_broadcast" }
+    ],
+    "Control": [
+      { "key": "gakko_controls_repeat" },
+      { "key": "gakko_controls_repeat_forever" },
+      { "key": "controls_whileUntil" },
+      { "key": "controls_if" }
+    ],
+    "Score": [
+      { "key": "gakko_score_change" }
+    ],
+    "Movement": [
+      { "key": "gakko_movement_jump" },
+      { "key": "gakko_movement_jump_height" },
+      { "key": "gakko_movement_forward" },
+      { "key": "gakko_movement_rotate_easy" },
+      { "key": "gakko_movement_rotate" },
+      { "key": "gakko_movement_move_x" },
+      { "key": "gakko_movement_move_y" },
+      { "key": "gakko_movement_move_x_y" },
+      { "key": "gakko_movement_change_x_by" },
+      { "key": "gakko_movement_change_y_by" },
+      { "key": "gakko_movement_set_position" },
+      { "key": "gakko_movement_set_speed" },
+      { "key": "gakko_movement_wait" }
+    ],
+    "Drawing": [
+      { "key": "gakko_drawing_pen_all" },
+      { "key": "gakko_drawing_pen_down" },
+      { "key": "gakko_drawing_pen_down_boolean" },
+      { "key": "gakko_drawing_pen_set_size" },
+      { "key": "gakko_drawing_pen_set_colour" },
+      { "key": "gakko_drawing_pen_clear" }
+    ],
+    "Math": [
+      { "key": "math_number" },
+      {
+        "key": "math_arithmetic",
+        "values": [1, 1]
+      },
+      { "key": "gakko_random_number" },
+      { "key": "variables_set" },
+      { "key": "variables_get" }
+    ],
+    "Variables": [],
+    "Colour": [
+      {
+        "key": "colour_picker",
+        "values": ["#ff0000"]
+      },
+      {
+        "key": "colour_random"
+      },
+      {
+        "key": "colour_rgb",
+        "values": [100, 50, 0]
+      }
+    ],
+    "Speech": [
+      { "key": "gakko_speech" }
+    ]
+  },
+  "initial_blocks": [
+    {
+      "key": "gakko_event_all",
+      "position": {
+        "x": 150,
+        "y": 40
+      },
+      "values": [ "cat" ],
+      "children":  {
+        "key": "gakko_controls_repeat",
+        "values": [10],
+        "children": { "key": "gakko_movement_jump" }
+      }
+    },
+    {
+      "key": "gakko_event_all",
+      "position": {
+        "x": 150,
+        "y": 200
+      },
+      "values": [ "bee" ],
+      "children": {
+        "key": "gakko_controls_repeat",
+        "values": [16],
+        "children": { "key": "gakko_movement_rotate", "values": [90] }
+      }
+    },
+    {
+      "key": "gakko_event_all",
+      "position": {
+        "x": 450,
+        "y": 200
+      },
+      "values": ["ladybug"],
+      "children": {
+        "key": "gakko_controls_repeat",
+        "values": [11],
+        "children": { "key": "gakko_movement_forward", "values": [5] }
+      }
+    }
+  ]
+}

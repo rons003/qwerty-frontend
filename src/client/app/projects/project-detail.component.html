@@ -1,0 +1,14 @@
+<div class="page-full">
+  <div class="header">
+    <h1>{{ project ? project.name : 'Code Gakko Sandbox' }}</h1>
+  </div>
+  <div class="sandbox-container card">
+    <cg-challenge-sandbox #sandbox
+                          [phaserState]="getPhaserState()"
+                          [blocklyState]="getBlocklyState()">
+    </cg-challenge-sandbox>
+    <div class="btn-container">
+      <button (click)="saveProject()" type="button" class="btn btn-info">Save Project</button>
+    </div>
+  </div>
+</div>

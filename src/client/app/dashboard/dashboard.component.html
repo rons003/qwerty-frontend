@@ -1,0 +1,49 @@
+<div class="page-content dashboard-container">
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Homework -->
+    <div class="bottom-margin">
+      <h1>Homework</h1>
+      <div class="homework-container card">
+        <div class="homework">
+          <div class="homework-heading">
+            <h3>Homework 1: Implementing Froggo</h3>
+            <p>Due: 2 July 2017<p>
+          </div>
+          <button class="btn btn-success">Start</button>
+        </div>
+        <div class="homework">
+          <div class="homework-heading">
+            <h3>Homework 2: Completing the Square</h3>
+            <p>Due: 26 July 2017<p>
+          </div>
+          <button class="btn btn-success">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapters -->
+    <div>
+      <h1>Chapters</h1>
+      <div class="chapter-container card">
+        <div *ngFor="let chapter of group?.chapters; let i = index;" class="chapter">
+          <div *ngIf="chapter.visible">
+            <div class="chapter-heading">
+              <h3>{{ chapter.name }}: {{ chapter.topic }}</h3>
+            </div>
+            <div class="chapter-content">
+              <div *ngFor="let item of chapter?.chapterItems; let j = index;" class="chapter-row">
+                <div class="chapter-text">
+                  <div [ngClass]="{'chapter-status-complete': i < 1}" class="chapter-status"></div>
+                  <p>- {{ getItemTitle(item) }}</p>
+                </div>
+                <button routerLink="/courses/{{group ? group.id : '1'}}/{{chapter.id}}/{{item.id}}" [ngClass]="{'btn-primary': i >= 1}" class="btn btn-default">{{ i < 1 ? 'View' : 'Start ' }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

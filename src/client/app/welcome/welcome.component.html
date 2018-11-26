@@ -1,0 +1,240 @@
+<!--Mask-->
+<div class="view hm-black-strong">
+    <div class="full-bg-img flex-center">
+        <ul>
+            <li>
+                <h1 class="h1-responsive wow fadeInDown" data-wow-delay="0.2s">GakkoBlocks</h1></li>
+            <li>
+                <p class="wow fadeInDown">Online platform for primary school kids to learn coding!</p>
+            </li>
+            <li>
+                <a (click)="showModal()" class="btn btn-primary btn-lg wow fadeInLeft" data-wow-delay="0.2s" rel="nofollow">Login</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--/.Mask-->
+
+<!-- Teacher Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead">Login</p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+              <div *ngIf="isLoginUnsuccessful">
+                <div class="alert alert-danger">
+                  Incorrect username or password. Please try again.
+                </div>
+              </div>
+              <form (ngSubmit)="onSubmit(user)" #loginForm="ngForm" novalidate>
+                <div class="form-group md-form form-sm" style="margin-top: 5%;">
+                  <i class="fa fa-user prefix"></i>
+                  <input [(ngModel)]="user.email"
+                         #email="ngModel"
+                         type="email"
+                         id="email"
+                         name="email"
+                         class="form-control"
+                         required />
+                  <label for="email">Your username</label>
+                </div>
+                <div class="form-group md-form form-sm">
+                  <i class="fa fa-lock prefix"></i>
+                  <input [(ngModel)]="user.password"
+                         #password="ngModel"
+                         type="password"
+                         id="password"
+                         name="password"
+                         class="form-control"
+                         required />
+                  <label for="password">Your password</label>
+                  <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                    Your password must contain at least 6 characters.
+                  </div>
+                </div>
+                <div class="text-center mt-2">
+                    <button [disabled]="!loginForm.form.valid" type="submit" class="btn btn-info">Log in <i class="fa fa-sign-in ml-1"></i></button>
+                </div>
+              </form>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <p>Don't have an account? <a href="mailto:info@codegakko.com?Subject=Inquiry%20For%20GakkoBlocks" target="_top" class="blue-text">Contact us</a> to get GakkoBlocks for your school!</p>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Teacher Modal -->
+
+<!-- Main container-->
+<div class="container">
+
+    <div class="divider-new">
+        <h2 class="h2-responsive wow fadeIn" data-wow-delay="0.2s">About us</h2>
+    </div>
+
+    <!--Section: About-->
+    <section id="about" class="text-center wow fadeIn" data-wow-delay="0.2s">
+
+        <p>Inspired by the Japanese school culture of independent learning and academic excellence, Code Gakko aims to ignite the passion in computer science among children and youths to empower them for the future.</p>
+
+    </section>
+    <!--Section: About-->
+
+    <div class="divider-new">
+        <h2 class="h2-responsive wow fadeIn">Best features</h2>
+    </div>
+
+    <!--Section: Best features-->
+    <section id="best-features">
+
+        <div class="row">
+
+            <!--First columnn-->
+            <div class="col-lg-4">
+                <!--Card-->
+                <div class="card wow fadeIn">
+
+                    <!--Card image-->
+                    <div class="overlay hm-white-slight">
+                        <img src="../../assets/img/feature01.jpg" class="img-fluid" alt="">
+                        <a>
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block text-center">
+                        <!--Title-->
+                        <h4 class="card-title">Customised Curriculum</h4>
+                        <hr>
+                        <!--Text-->
+                        <p class="card-text p-3">Created for primary school students with our experience in teaching coding</p>
+                    </div>
+                    <!--/.Card content-->
+
+                </div>
+                <!--/.Card-->
+            </div>
+            <!--First columnn-->
+
+            <!--Second columnn-->
+            <div class="col-lg-4">
+                <!--Card-->
+                <div class="card wow fadeIn" data-wow-delay="0.2s">
+
+                    <!--Card image-->
+                    <div class="overlay hm-white-slight">
+                        <img src="../../assets/img/feature02.jpg" class="img-fluid" alt="">
+                        <a>
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block text-center">
+                        <!--Title-->
+                        <h4 class="card-title">Sandbox Play</h4>
+                        <hr>
+                        <!--Text-->
+                        <p class="card-text p-3">Students can create their own projects and play with GakkoBlocks outside class</p>
+                    </div>
+                    <!--/.Card content-->
+
+                </div>
+                <!--/.Card-->
+            </div>
+            <!--Second columnn-->
+
+            <!--Third columnn-->
+            <div class="col-lg-4">
+                <!--Card-->
+                <div class="card wow fadeIn" data-wow-delay="0.4s">
+
+                    <!--Card image-->
+                    <div class="overlay hm-white-slight">
+                        <img src="../../assets/img/feature03.jpg" class="img-fluid" alt="">
+                        <a>
+                            <div class="mask"></div>
+                        </a>
+                    </div>
+                    <!--/.Card image-->
+
+                    <!--Card content-->
+                    <div class="card-block text-center">
+                        <!--Title-->
+                        <h4 class="card-title">Support Tools</h4>
+                        <hr>
+                        <!--Text-->
+                        <p class="card-text p-3">Teachers get progress reports, account management, and all solutions to exercises</p>
+                    </div>
+                    <!--/.Card content-->
+
+                </div>
+                <!--/.Card-->
+            </div>
+            <!--Third columnn-->
+
+        </div>
+
+    </section>
+    <!--/Section: Best features-->
+
+    <div class="divider-new">
+        <h2 class="h2-responsive wow fadeIn">Contact us</h2>
+    </div>
+
+    <!--Section: Contact-->
+    <section id="contact">
+        <div class="row text-center">
+          <p>Have any questions? For any enquiry: +65 94248845 </p>
+        </div>
+    </section>
+    <!--Section: Contact-->
+
+</div>
+<!--/ Main container-->
+
+
+
+<!--Footer-->
+<footer class="page-footer center-on-small-only text-center pt-4">
+    
+    <!--Call to action-->
+    <div class="call-to-action">
+        <h4>GakkoBlocks by CodeGakko</h4>
+        <ul class="list-inline">
+            <li class="list-inline-item">
+                <h5>Get our platform for your school!</h5>
+            </li>
+            <li class="list-inline-item"><a target="_blank" href="https://codegakko.com/contact/" class="btn btn-info" rel="nofollow">Contact Us!</a></li>
+        </ul>
+    </div>
+    <!--/.Call to action-->
+
+    <!--Copyright-->
+    <div class="footer-copyright">
+        <div class="container-fluid">
+            © 2017 Copyright: <a href="http://www.codegakko.com"> CodeGakko.com </a>
+            Template by: <a href="http://www.MDBootstrap.com"> MDBootstrap.com </a>
+            Images from: <a [routerLink]="credits">Freepik.com</a>
+        </div>
+    </div>
+    <!--/.Copyright-->
+
+</footer>
+<!--/.Footer-->

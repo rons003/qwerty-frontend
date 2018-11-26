@@ -1,0 +1,196 @@
+<div class="page-margin">
+  <div *ngIf="moduleChapter" class="back-header">
+    <button [routerLink]="['/mymodules']" type="button" class="backButton btn px-3"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      <h5 class="ml-2 align-middle font-weight-bold" style="display: inline-block">Chapter > {{ modules.title }}</h5>
+  </div>
+  <div class="header">
+    <h1 *ngIf="!moduleChapter">Chapters</h1>
+    <!-- <h5 *ngIf="moduleChapter" class="float-center font-weight-bold grey-text text-truncate" style="max-width: 50%;">Module Name: {{ modules.title }}</h5>-->
+
+  </div>
+
+  <div class="row">
+    <!-- <div class="col-4">
+        <div class="md-form form-sm">
+          <label>Search:</label>
+          <input (keyup)="getAllSection($event.target.value)" type="text" class="form-control">
+        </div>
+      </div> -->
+    <div class="col text-right">
+      <button *ngIf="toggleCb" (click)="deleteChapter()" type="button" class="btn btn-danger btn-md">
+        <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>DELETE CHAPTER</button>
+      <button *ngIf="!moduleChapter" type="button" class="btn btn-light-green accent-3 btn-md" (click)="createNewChapter()">
+        <i class="fa fa-plus pr-2" aria-hidden="true"></i> ADD NEW CHAPTER </button>
+      <button *ngIf="moduleChapter" (click)="listChapterModalShow()" type="button" class="btn btn-light-green accent-3 btn-md">
+        <i class="fa fa-plus pr-2" aria-hidden="true"></i>Assign Chapter</button>
+    </div>
+  </div>
+  <div class="card" *ngIf="!moduleChapter">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th *ngIf="toggleCb" width="1%">
+            <input type="checkbox">
+          </th>
+          <th width="1%">#</th>
+          <th>Chapter Name</th>
+          <th>Chapter Items</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chapter of chapters">
+          <td *ngIf="toggleCb">
+            <input type="checkbox" (change)="checkDelete(chapter.id)">
+          </td>
+          <th class="counterCell"></th>
+          <td>{{ chapter.name }}</td>
+          <td>{{ chapter.chapterItems.length }}</td>
+          <td>
+            <div class="dropdown">
+              <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                <a (click)="deleteToggle()" class="dropdown-item fa fa-trash pr-2">
+                  Delete</a>
+                <a (click)="select(chapter)" class="dropdown-item fa fa-edit pr-2">
+                  Edit</a>
+                <a [routerLink]="['/chapteritem/']" [queryParams]="{ id: chapter.id, title: chapter.name }" class="dropdown-item fa fa-file-o pr-2">
+                    <span> Chapter Items</span>
+                  </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card" *ngIf="moduleChapter">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th *ngIf="toggleCb" width="1%">
+            <input type="checkbox">
+          </th>
+          <th width="1%">#</th>
+          <th>Chapter Name</th>
+          <th>Chapter Items</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chapter of chapterFromModule">
+          <td *ngIf="toggleCb">
+            <input type="checkbox" (change)="checkDelete(chapter.id)">
+          </td>
+          <th class="counterCell"></th>
+          <td>{{ chapter.name }}</td>
+          <td>{{ chapter.chapterItems.length }}</td>
+          <td>
+            <div class="dropdown">
+              <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                <a (click)="deleteToggle()" class="dropdown-item fa fa-trash pr-2">
+                  Delete</a>
+                <a (click)="select(chapter)" class="dropdown-item fa fa-edit pr-2">
+                  Edit</a>
+                <a class="dropdown-item fa fa-file-o pr-2" [routerLink]="['/chapteritem']">
+                  Chapter Items</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="chapterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header primary-color white-text">
+        <h4 class="title">
+          <i class="fa fa-book"></i>Chapter Info</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" #chapterForm="ngForm" novalidate>
+          <div class="md-form form-sm">
+            <i class="fa fa-book prefix"></i>
+            <label [class.active]="selectedChapter.name && selectedChapter.name.length > 0">Chapter Name</label>
+            <input [(ngModel)]="selectedChapter.name" #name="ngModel" type="text" id="name" name="name" class="form-control" required>
+          </div>
+          <div class="md-form form-sm">
+            <i class="fa fa-file-text prefix"></i>
+            <label [class.active]="selectedChapter.desc && selectedChapter.desc.length > 0">Description</label>
+            <input [(ngModel)]="selectedChapter.desc" #desc="ngModel" type="text" id="desc" name="desc" class="form-control" required>
+          </div>
+          <div class="text-center mt-2">
+            <button [disabled]="!chapterForm.form.valid" type="submit" class="btn btn-info"> SEND
+              <i class="fa fa-sign-in ml-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+<div class="modal fade" id="list-chapter-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-warning" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">List of Chapters</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="card">
+          <table class="table">
+            <thead>
+              <tr>
+                <th width="1%">#</th>
+                <th>Chapter Name</th>
+                <th>Total Items</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let chapter of chapters">
+                <th class="counterCell"></th>
+                <td>{{ chapter.name }}</td>
+                <td>--</td>
+                <td>
+                  <button (click)="addChapterToModule(modules.id,chapter.id)" type="button" class="btn btn-info btn-md">Add
+                    <i class="fa fa-sign-in ml-1"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

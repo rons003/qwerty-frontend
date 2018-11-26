@@ -1,0 +1,84 @@
+<div class="page-margin">
+  <div class="header">
+      <button [routerLink]="['/sections']" type="button" class="backButton btn px-3"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      <h5 class="ml-2 align-middle font-weight-bold" style="display: inline-block">Students</h5>
+  </div>
+  <div class="text-right">
+    <button *ngIf="toggleCb" (click)="deleteStudent()" type="button" class="btn btn-danger btn-md">
+      <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>Delete</button>
+    <button (click)="showModal()" type="button" class="btn btn-light-green accent-3 btn-md">
+      <i class="fa fa-plus pr-2" aria-hidden="true"></i>Assign Student</button>
+  </div>
+  <div class="card">
+    <!-- <div class="card-header">
+      Students of {{ section.title }}
+    </div> -->
+    <table class="table">
+      <thead>
+        <th width="1%" *ngIf="toggleCb">
+          <input type="checkbox">
+        </th>
+        <th width="70%">Full Name</th>
+        <th width="10%">Action</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of studentList; let i = index">
+          <th width="1%" class="d-none checkBoxTd">
+            <input class="checkBoxes" type="checkbox" (change)="checkDelete(student.id)">
+          </th>
+          <td width="70%">{{ student.firstName }} {{ student.lastName }}</td>
+          <td width="10%">
+            <button (click)="deleteToggle(section.id,i)" type="button" class="btn btn-danger btn-sm ">
+              <i class="fa fa-trash"></i> Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="student-list-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <!--Modal: Contact form-->
+  <div class="modal-dialog cascading-modal modal-lg" role="document">
+
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Header-->
+      <div class="modal-header primary-color white-text">
+        <h4 class="title">
+          <i class="fa fa-user"></i> List of Students</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <div class="card">
+          <table class="table">
+            <thead>
+              <th width="1%">
+              </th>
+              <th>Full Name</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of studentFromSchool">
+                <td width="1%">
+                  <input type="checkbox" (change)="checkAdd(student.id)">
+                </td>
+                <td>{{ student.firstName }} {{ student.lastName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-4 mb-2">
+          <button class="btn btn-primary" (click)="onSubmit()">Save
+            <i class="fa fa-send ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  <!--/Modal: Contact form-->
+</div>

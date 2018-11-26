@@ -1,0 +1,200 @@
+<div class="page-margin">
+  <div *ngIf="moduleSection" class="back-header">
+    <button [routerLink]="['/mymodules']" type="button" class="backButton btn px-3"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      <h5 class="ml-2 align-middle font-weight-bold" style="display: inline-block">Section > {{ modules.title }}</h5>
+    <!--<h5 class="float-center font-weight-bold grey-text text-truncate" style="max-width: 50%;">{{ modules.title }}</h5>-->
+  </div>
+  <div class="header">
+    <h1 *ngIf="!moduleSection">Sections</h1>
+    <!-- <h5 *ngIf="moduleSection" class="float-center font-weight-bold grey-text text-truncate" style="max-width: 50%;">Module: {{ modules.title }}</h5>-->
+  </div>
+  <div class="row">
+    <div class="col-4" *ngIf="!moduleSection">
+      <div class="md-form form-sm">
+        <label>Search:</label>
+        <input (keyup)="getAllSection($event.target.value)" type="text" class="form-control">
+      </div>
+    </div>
+    <div class="col text-right">
+      <button *ngIf="toggleCb" (click)="deleteSection()" type="button" class="btn btn-danger btn-md">
+        <i class="fa fa-trash-o pr-2" aria-hidden="true"></i>Delete</button>
+      <button *ngIf="!moduleSection && !isSchool" (click)="createNew()" type="button" class="btn btn-light-green accent-3 btn-md">
+        <i class="fa fa-plus pr-2" aria-hidden="true"></i> ADD NEW SECTION </button>
+      <button *ngIf="moduleSection" (click)="listSectionModalShow()" type="button" class="btn btn-light-green accent-3 btn-md">
+        <i class="fa fa-plus pr-2" aria-hidden="true"></i>Assign Section</button>
+    </div>
+  </div>
+  <div class="card">
+    <table *ngIf="!moduleSection" class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th *ngIf="toggleCb">
+            <input type="checkbox" (change)="selectAll()">
+          </th>
+          <th>#</th>
+          <th>Section Name</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Students</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let section of sections; let i = index">
+
+          <td class="d-none checkBoxTd">
+            <input class="checkBoxes" type="checkbox" (change)="checkDelete(section.id)">
+          </td>
+          <th class="counterCell"></th>
+          <td>{{ section.name }}</td>
+          <td> - </td>
+          <td> - </td>
+          <td>{{ section.studentList.length }}</td>
+          <td>
+            <div class="dropdown">
+              <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                <a (click)="deleteToggle(section.id,i)" class="dropdown-item fa fa-trash pr-2">
+                  <span> Delete</span>
+                </a>
+                <a (click)="select(section)" class="dropdown-item fa fa-edit pr-2">
+                  <span> Edit</span>
+                </a>
+                <a [routerLink]="['/sections/students']" [queryParams]="{ id: section.id, title: section.name, school_id: section.schoolId }"
+                  class="dropdown-item fa fa-users pr-2">
+                  <span> Students</span>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table *ngIf="moduleSection" class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th *ngIf="toggleCb">
+            <input type="checkbox">
+          </th>
+          <th width="1%">#</th>
+          <th width="30%">Section Name</th>
+          <th width="15%">Student</th>
+          <th width="15%">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let section of sectionList; let i = index">
+          <td class="d-none checkBoxTd">
+            <input class="checkBoxes" type="checkbox" (change)="checkDelete(section.id)">
+          </td>
+          <th class="counterCell"></th>
+          <td>{{ section.name }}</td>
+          <td>{{ section.studentList.length }}</td>
+          <td>
+            <div class="dropdown">
+              <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-h pr-2" style="color:grey" aria-hidden="true"></i>
+              </a>
+              <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                <a *ngIf="authService.isActiveUserSuperAdmin() || authService.isActiveUserAdmin()" (click)="deleteToggle(section.id,i)" class="dropdown-item fa fa-trash pr-2">
+                  Delete</a>
+                <a [routerLink]="['/students/']" class="dropdown-item fa fa-users pr-2"> Students</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="sectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog cascading-modal" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header primary-color white-text">
+        <h4 class="title">
+          <i class="fa fa-user"></i> Section Form</h4>
+        <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmit()" #sectionForm="ngForm" novalidate>
+          <div class="md-form form-sm">
+            <i class="fa fa-envelope prefix"></i>
+            <label [class.active]="selectedSection.name && selectedSection.name.length > 0">Section Name</label>
+            <input [(ngModel)]="selectedSection.name" #title="ngModel" type="text" id="title" name="name" class="form-control" required>
+          </div>
+          <!-- <div class="md-form form-sm" *ngIf="authService.isActiveUserSuperAdmin()">
+            <i class="fa fa-building prefix"></i>
+            <select class="custom-select" [(ngModel)]="selectedModule.school_id" id="school_id" name="school_id" (change)="getModule($event.target.value)">
+              <option *ngFor="let schoolOpt of schools" [value]="schoolOpt.name">{{ schoolOpt.name }}</option>
+            </select>
+            <label for="school_id" class="active">School</label>
+          </div> -->
+          <div class="text-center mt-2">
+            <button [disabled]="!sectionForm.form.valid" type="submit" class="btn btn-info">Submit
+              <i class="fa fa-sign-in ml-1"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+<div class="modal fade" id="listSectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-warning" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">List of Sections</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="card">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th width="1%">#</th>
+                <th>Section Name</th>
+                <th>Teacher</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let section of sections">
+                <th class="counterCell"></th>
+                <td>{{ section.name }}</td>
+                <td>Siazon</td>
+                <td>
+                  <button (click)="addSectionToModule(modules.id,section.id)" type="button" class="btn btn-info btn-md">Add
+                    <i class="fa fa-sign-in ml-1"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

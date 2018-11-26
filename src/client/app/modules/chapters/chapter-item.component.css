@@ -1,0 +1,60 @@
+.page-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.backButton {
+  color: black;
+  background-color: white !important;
+  display: inline-block;
+}
+
+.btn {
+  border-radius: 8px;
+  text-transform: capitalize;
+}
+
+span {
+  font-family: Ubuntu;
+}
+
+.modal-dialog.modal-notify.modal-info .badge,
+.modal-dialog.modal-notify.modal-info .modal-header {
+  background-color: #ed6f52;
+}
+
+.primary-color {
+  background-color: #ed6f52 !important;
+}
+
+.custom-select {
+  width: 92%;
+  margin-left: 39px;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+table {
+  counter-reset: tableCount;     
+}
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}
+.dropdown-toggle::after {
+  display: none;
+}
+  thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    background-color: #F37053;
+    color: whitesmoke;
+  }

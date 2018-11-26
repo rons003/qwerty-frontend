@@ -1,0 +1,36 @@
+.modal-dialog.modal-notify.modal-info .fa {
+  color: white;
+}
+
+.primary-color {
+  background-color: #ed6f52 !important;
+}
+
+.counterCell:before {
+  content: counter(tableCount);
+  counter-increment: tableCount;
+}
+
+.backButton {
+  color: black;
+  background-color: white !important;
+  display: inline-block;
+}
+
+thead {
+  background-color: #F37053;
+  color: whitesmoke;
+}
+
+.btn {
+  border-radius: 8px;
+  text-transform: capitalize;
+}
+
+span {
+  font-family: Ubuntu;
+}
+
+.primary-color {
+  background-color: #ed6f52!important;
+}

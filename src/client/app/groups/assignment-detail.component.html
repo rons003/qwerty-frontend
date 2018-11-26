@@ -1,0 +1,15 @@
+<div class="content">
+  <div class="header">
+    <h1>Homework: {{ challenge ? challenge.name : 'Homework' }}</h1>
+  </div>
+  <div class="homework-container card">
+    <cg-challenge-detail
+      [challenge]="challenge"
+      [challengeSave]="challengeSave"
+      [onChallengeComplete]="onChallengeComplete"
+      [onSaveBtnClicked]="onSaveBtnClicked.bind(this)"
+      [goToNextBtnName]="nextBtnName"
+      [goToNext]="goToNext.bind(this)">
+    </cg-challenge-detail>
+  </div>
+</div>

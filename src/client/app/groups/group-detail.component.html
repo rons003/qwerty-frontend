@@ -1,0 +1,128 @@
+<div class="modal animated fade right" id="chapterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-info modal-lg" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <div class="text-left text-white">
+          <h2>Introduction to Computer Programming</h2>
+          <p>Class: {{ group?.name }}</p>
+        </div>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <table class="table borderless">
+          <tbody>
+            <tr *ngFor="let chapter of group?.chapters">
+              <td>
+                <i [ngClass]="{'fa-lock': !isChapterVisible(chapter) }" class="fa chapter-icon"></i>
+              </td>
+              <td>{{ chapter.name }}</td>
+              <td>100%</td>
+              <td>
+                <a *ngIf="authService.isActiveUserAdmin() || isChapterVisible(chapter)" [routerLink]="['/courses/' + group.id + '/' + chapter.id]"
+                  data-dismiss="modal">
+                  <i style="font-size:24px" class="fa">&#xf105;</i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+
+<div class="page-margin">
+  <div class="header d-flex justify-content-between">
+    <h1>My Modules</h1>
+    <!-- <h1>{{ group?.name }}</h1> -->
+    <button *ngIf="authService.isActiveUserAdmin()" routerLink="/groups/{{group ? group.id : '0'}}/students" class="btn btn-default">Student List</button>
+  </div>
+
+  <div class="d-flex align-items-stretch pb-5 h-100">
+    <div *ngIf="!group?.chapters || group.chapters.length === 0">
+      <p class="text-center">No chapters in this class.</p>
+    </div>
+
+    <div *ngIf="group?.chapters || group.chapters.length > 0" class="d-flex flex-column w-100">
+      <div class="row">
+        <div class="col">
+          <div class="card chapter-card">
+            <h2 class="h4-responsive">Introduction to Computer Programming</h2>
+            <p>{{ group?.name }}</p>
+            <div class="text-center">
+              <div>
+                <button type="button" class="btn btn-outline-default waves-effect">
+                  <i class="fa fa-play-circle"></i> Resume</button>
+              </div>
+              <div>
+                <button type="button" (click)="chapterModal()" class="btn btn-outline-default waves-effect">
+                  <i class="fa fa-list"></i> Chapters</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+
+        </div>
+        <div class="col">
+
+        </div>
+      </div>
+
+      <!-- <div *ngFor="let chapter of group?.chapters" class="card chapter-card">
+        <div class="card-block d-flex justify-content-between align-items-center">
+          <div class="d-flex flex-row align-items-center mr-auto">
+            <i [ngClass]="{'fa-lock': !isChapterVisible(chapter) }" class="fa chapter-icon"></i>
+            <h4 class="mb-0">{{ chapter.name }}</h4>
+          </div>
+          <div>
+            <button *ngIf="authService.isActiveUserAdmin()" (click)="toggleVisibilityOfChapter(chapter)" class="btn btn-default">
+              <i [ngClass]="{'fa-lock': isChapterVisible(chapter), 'fa-unlock': !isChapterVisible(chapter)}" class="fa left"></i>{{ isChapterVisible(chapter) ? 'Lock' : 'Unlock' }}
+            </button>
+            <a *ngIf="authService.isActiveUserAdmin() || isChapterVisible(chapter)" [routerLink]="['/courses/' + group.id + '/' + chapter.id]"
+              class="btn btn-primary">Select</a>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+<!-- <div class="page-margin">
+  <div class="header d-flex justify-content-between">
+    <h1>My Modules</h1>
+    <h1>{{ group?.name }}</h1>
+    <button *ngIf="authService.isActiveUserAdmin()" routerLink="/groups/{{group ? group.id : '0'}}/students" class="btn btn-default">Student List</button>
+  </div>
+
+  <div class="d-flex align-items-stretch pb-5 h-100">
+    <div *ngIf="!group?.chapters || group.chapters.length === 0">
+      <p class="text-center">No chapters in this class.</p>
+    </div>
+
+    <div *ngIf="group?.chapters || group.chapters.length > 0" class="d-flex flex-column w-100">
+
+      <div *ngFor="let chapter of group?.chapters" class="card chapter-card">
+        <div class="card-block d-flex justify-content-between align-items-center">
+          <div class="d-flex flex-row align-items-center mr-auto">
+            <i [ngClass]="{'fa-lock': !isChapterVisible(chapter) }" class="fa chapter-icon"></i>
+            <h4 class="mb-0">{{ chapter.name }}</h4>
+          </div>
+          <div>
+            <button *ngIf="authService.isActiveUserAdmin()" (click)="toggleVisibilityOfChapter(chapter)" class="btn btn-default">
+              <i [ngClass]="{'fa-lock': isChapterVisible(chapter), 'fa-unlock': !isChapterVisible(chapter)}" class="fa left"></i>{{ isChapterVisible(chapter) ? 'Lock' : 'Unlock' }}
+            </button>
+            <a *ngIf="authService.isActiveUserAdmin() || isChapterVisible(chapter)" [routerLink]="['/courses/' + group.id + '/' + chapter.id]"
+              class="btn btn-primary">Select</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> -->

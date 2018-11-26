@@ -1,0 +1,76 @@
+<div class="container page-content">
+  <form [formGroup]="groupForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input formControlName="name" class="form-control" required />
+    </div>
+    <!-- <div class="form-group">
+      <label for="icon">Icon URL (optional)</label>
+      <input formControlName="iconUrl" type="url" class="form-control" />
+    </div> -->
+    <div style="display: flex;">
+      <div class="form-group" style="flex: 1; margin-right: 15px;">
+        <label for="students">Students</label>
+        <input formControlName="students"
+               [source]="getStudents.bind(this)"
+               [list-formatter]="getStudentNameFormat"
+               [value-formatter]="getStudentNameFormat"
+               [accept-user-input]="false"
+               [match-formatted]="true"
+               (valueChanged)="onStudentSelected($event)"
+               placeholder="Search for a student..."
+               class="form-control"
+               auto-complete />
+        <div class="panel panel-info" style="margin-top: 15px;">
+          <div class="panel-heading">
+              Selected students
+          </div>
+          <div class="panel-body">
+            <p *ngIf="selectedStudents.length === 0">No students selected.</p>
+             <ul class="list-group" [sortableData]="selectedStudents" dnd-sortable-container>
+                 <li
+                    *ngFor="let student of selectedStudents; let i = index"
+                    [sortableIndex]="i"
+                    class="list-group-item"
+                    dnd-sortable>
+                   {{ getStudentNameFormat(student) }} <button (click)="removeSelectedStudent(i)" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                 </li>
+             </ul>
+          </div>
+        </div>
+       </div>
+       <div class="form-group" style="flex: 1;">
+         <label for="chapters">Chapters</label>
+         <input formControlName="chapters"
+                [source]="getChapters.bind(this)"
+                [list-formatter]="getChapterNameFormat"
+                [value-formatter]="getChapterNameFormat"
+                [accept-user-input]="false"
+                [match-formatted]="true"
+                (valueChanged)="onChapterSelected($event)"
+                placeholder="Search for a chapter..."
+                class="form-control"
+                auto-complete />
+          <div class="panel panel-info" style="margin-top: 15px;">
+            <div class="panel-heading">
+                Selected chapters
+            </div>
+            <div class="panel-body">
+              <p *ngIf="selectedChapters.length === 0">No chapters selected.</p>
+               <ul class="list-group" [sortableData]="selectedChapters"dnd-sortable-container>
+                   <li
+                      *ngFor="let chapter of selectedChapters; let i = index"
+                      [sortableIndex]="i"
+                      class="list-group-item"
+                      dnd-sortable>
+                     {{ getChapterNameFormat(chapter) }} <button (click)="removeSelectedChapter(i)" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                   </li>
+               </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+    <button [disabled]="!groupForm.valid" type="submit" class="btn btn-success">Submit</button>
+    <button (click)="onCancel" class="btn btn-default">Cancel</button>
+  </form>
+</div>
